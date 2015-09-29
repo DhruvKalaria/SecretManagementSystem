@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.crypto.KeyGenerator;
 
-import org.foreni.sms.model.Keystore;
+import org.foreni.sms.model.KeystoreProfile;
 import org.foreni.sms.model.SecretKey;
 import org.foreni.sms.model.SecretKey.SecretKeyAlgorithm;
 import org.foreni.sms.model.SecretKey.SecretKeyStatus;
@@ -19,7 +19,7 @@ public class SecretKeyManagerImpl implements SecretKeyManager {
 	private KeystoreRepo keystoreRepo;
 	
 	@Autowired
-	private Keystore keystore;
+	private KeystoreProfile keystore;
 
 	public SecretKey createKey(String keyId, String keyAlias,
 			SecretKeyStatus keyStatus, SecretKeyAlgorithm keyAlgorithm,

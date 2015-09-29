@@ -1,11 +1,10 @@
 package org.foreni.sms.repo;
 
-import org.foreni.sms.model.Keystore;
-
+import org.foreni.sms.model.KeystoreProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface KeystoreRepo	{
 	
-	void createKeyStore(Keystore keystoreProfile);
-	
-	Boolean isKeystoreCreated();
+	void saveKeystoreProfile(KeystoreProfile keystoreProfile);
+
 }

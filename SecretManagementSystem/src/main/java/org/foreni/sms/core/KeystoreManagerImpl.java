@@ -10,13 +10,17 @@ import java.util.Date;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.foreni.sms.model.Keystore;
+import org.foreni.sms.model.KeystoreProfile;
+import org.foreni.sms.model.KeystoreProfile.KeystoreType;
 import org.foreni.sms.repo.KeystoreRepo;
+import org.foreni.sms.utils.KeystoreUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -26,29 +30,43 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0
  */
 
-@Service
+@Component
 public class KeystoreManagerImpl implements KeystoreManager {
 	
 	@Autowired
 	private KeystoreRepo keystoreRepo;
 	
-	public void createKeyStore(String type, String passphrase,
-			String pathToKeyStore) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
+	public KeystoreRepo getKeystoreRepo() {
+		return keystoreRepo;
+	}
 
-		KeyStore keyStore;
-		keyStore = KeyStore.getInstance(type.toString());
-		char[] password = passphrase.toCharArray();
-		keyStore.load(null,password);
-		FileOutputStream fos = new FileOutputStream(pathToKeyStore);
-		keyStore.store(fos, password);
-		fos.close();
-		Keystore keyStoreProfile = new Keystore();
-		keyStoreProfile.setKeystoreType(type);
-		keyStoreProfile.setCreationDate(new Date());
-		keystoreRepo.createKeyStore(keyStoreProfile);
+	public void setKeystoreRepo(KeystoreRepo keystoreRepo) {
+		this.keystoreRepo = keystoreRepo;
+	}
+
+	public void createKeyStore(KeystoreProfile keystoreProfile)  {
+		try {
+			KeystoreUtils.addKeystore(keystoreProfile);
+			getKeystoreRepo().saveKeystoreProfile(keystoreProfile);
+		} catch (KeyStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public Boolean isAvailable() {
-		return keystoreRepo.isKeystoreCreated();
+		//return keystoreRepo.isKeystoreCreated();
+		return null;
 	}
+
 }

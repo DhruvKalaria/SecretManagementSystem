@@ -1,9 +1,12 @@
 package org.foreni.sms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,14 +16,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="Keystore")
-public class Keystore {
-	
+@Table(name="keystore_profile")
+public class KeystoreProfile {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
 	@Column(name = "keystore_type")
+	@Enumerated(EnumType.STRING)
 	//@Lob - Used for large data hold String - CLOB and Byte[] it is BLOB
 	private KeystoreType keystoreType;
 	
@@ -71,10 +75,10 @@ public class Keystore {
 		
 	}
 	
-	public Keystore() {
+	public KeystoreProfile() {
 		super();
 	}
-	public Keystore(long id, KeystoreType keystoreType, Date creationDate,
+	public KeystoreProfile(long id, KeystoreType keystoreType, Date creationDate,
 			String passphrase) {
 		super();
 		this.id = id;

@@ -1,37 +1,43 @@
 package org.foreni.sms.repo;
 
-import org.foreni.sms.model.Keystore;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.foreni.sms.model.KeystoreProfile;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class KeystoreRepoImpl implements KeystoreRepo	{
+@Component
+@Repository("keystoreRepoImpl")
+@Transactional(propagation=Propagation.REQUIRED)
+public class KeystoreRepoImpl implements KeystoreRepo {
 
-	public void createKeyStore(Keystore keystoreProfile) {
-		
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		session.save(keystoreProfile);
-		session.getTransaction().commit();
-		session.close();
-		
-		keystoreProfile = null;
-		
-		session = sessionFactory.openSession();
-		session.beginTransaction();
-		keystoreProfile = (Keystore)session.get(Keystore.class, 1L);
-		session.close();
-		System.out.println(keystoreProfile.toString());
+	@PersistenceContext
+	private EntityManager entityManager;
+	
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void saveKeystoreProfile(KeystoreProfile keystoreProfile) {		
+		entityManager.persist(keystoreProfile);
 	}
 
 	public Boolean isKeystoreCreated() {
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		Keystore keystoreProfile = (Keystore)session.get(Keystore.class, 1L);
+		KeystoreProfile keystoreProfile = (KeystoreProfile)session.get(KeystoreProfile.class, 1L);
 		session.close();
 		if(keystoreProfile == null)
 			return false;
