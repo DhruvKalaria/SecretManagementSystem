@@ -2,6 +2,10 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
 version="1.0">
 <persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL" >
+    <properties>
+        <property name="hibernate.hbm2ddl.auto" value="create"/>
+    </properties>
 <class>org.foreni.sms.model.KeystoreProfile</class>
+<class>org.foreni.sms.model.SecretKeyProfile</class>
 </persistence-unit>
 </persistence>

@@ -1,44 +1,51 @@
 package org.foreni.sms.core;
 
-import java.security.KeyStore;
-import java.util.Date;
+import java.io.IOException;
 
-import javax.crypto.KeyGenerator;
-
-import org.foreni.sms.model.KeystoreProfile;
-import org.foreni.sms.model.SecretKey;
-import org.foreni.sms.model.SecretKey.SecretKeyAlgorithm;
-import org.foreni.sms.model.SecretKey.SecretKeyStatus;
-import org.foreni.sms.model.SecretKey.SecretKeyStrength;
-import org.foreni.sms.repo.KeystoreRepo;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import javax.crypto.SecretKey;
+import org.foreni.sms.model.SecretKeyProfile;
+import org.foreni.sms.repo.SecretKeyRepo;
+import org.foreni.sms.utils.SecretKeyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SecretKeyManagerImpl implements SecretKeyManager {
 
 	@Autowired
-	private KeystoreRepo keystoreRepo;
+	SecretKeyRepo secretKeyRepo;
 	
-	@Autowired
-	private KeystoreProfile keystore;
-
-	public SecretKey createKey(String keyId, String keyAlias,
-			SecretKeyStatus keyStatus, SecretKeyAlgorithm keyAlgorithm,
-			SecretKeyStrength keyStrength, boolean isExtractable,
-			Date keyCreationTime, Date keyExpirationTime, String keyOwner) {
-		
-		javax.crypto.SecretKey secretKey;
-		KeyStore.SecretKeyEntry secretKeyEntry;
-		KeyStore.ProtectionParameter protectionParameter;
-		
-		KeyGenerator keyGenerator = KeyGenerator.getInstance(keyAlgorithm.toString());
-		keyGenerator.init(keyStrength.getSecretKeyStrength());
-		secretKey = keyGenerator.generateKey();
-		protectionParameter = new KeyStore.PasswordProtection(keystore.getPassphrase().toCharArray());
-		secretKeyEntry = new KeyStore.SecretKeyEntry(secretKey);
-		keystore.setEntry("xyz", secretKeyEntry,protectionParameter);
-		
-		return null;
+	public SecretKeyRepo getSecretKeyRepo() {
+		return secretKeyRepo;
 	}
-	
-	
+
+	public void setSecretKeyRepo(SecretKeyRepo secretKeyRepo) {
+		this.secretKeyRepo = secretKeyRepo;
+	}
+
+	public SecretKey createKey(SecretKeyProfile secretKeyProfile) {
+		
+		SecretKey secretKey;
+		try {
+			secretKey = SecretKeyUtils.addSecretKey(secretKeyProfile);
+			getSecretKeyRepo().saveSecretKeyProfile(secretKeyProfile);
+			return secretKey;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;		
+	}
 }

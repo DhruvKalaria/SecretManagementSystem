@@ -13,11 +13,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="secretkey_profile")
-public class SecretKey {
+public class SecretKeyProfile {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String keyId;
+	private long keyId;
 	
 	@Column(unique=true)
 	private String keyAlias;
@@ -31,6 +31,8 @@ public class SecretKey {
 	@Enumerated(EnumType.STRING)
 	private SecretKeyStrength keyStrength;
 	
+	private String secretKeyPassphrase;
+	
 	private boolean isExtractable;
 	
 	private Date keyCreationTime;
@@ -38,29 +40,19 @@ public class SecretKey {
 	private Date keyExpirationTime;
 	
 	private String keyOwner;
-	
-	public SecretKey(String keyId, String keyAlias, SecretKeyStatus keyStatus,
-			SecretKeyAlgorithm keyAlgorithm, SecretKeyStrength keyStrength, boolean isExtractable,
-			Date keyCreationTime, Date keyExpirationTime, String keyOwner) {
-		super();
-		this.keyId = keyId;
-		this.keyAlias = keyAlias;
-		this.keyStatus = keyStatus;
-		this.keyAlgorithm = keyAlgorithm;
-		this.keyStrength = keyStrength;
-		this.isExtractable = isExtractable;
-		this.keyCreationTime = keyCreationTime;
-		this.keyExpirationTime = keyExpirationTime;
-		this.keyOwner = keyOwner;
+		
+	public String getSecretKeyPassphrase() {
+		return secretKeyPassphrase;
 	}
-	
-	public SecretKey() {
-		super();
+
+	public void setSecretKeyPassphrase(String secretKeyPassphrase) {
+		this.secretKeyPassphrase = secretKeyPassphrase;
 	}
-	public String getKeyId() {
+
+	public long getKeyId() {
 		return keyId;
 	}
-	public void setKeyId(String keyId) {
+	public void setKeyId(long keyId) {
 		this.keyId = keyId;
 	}
 	public String getKeyAlias() {

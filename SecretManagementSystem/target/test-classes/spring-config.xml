@@ -53,4 +53,6 @@ init-method="initialize">
 
 <bean id="keystoreRepo" class="org.foreni.sms.repo.KeystoreRepoImpl" />
 <bean id="keystoreManagerImpl" class="org.foreni.sms.core.KeystoreManagerImpl" />
+<bean id="secretKeyRepo" class="org.foreni.sms.repo.SecretKeyRepoImpl" />
+<bean id="secretKeyManagerImpl" class="org.foreni.sms.core.SecretKeyManagerImpl" />
 </beans>

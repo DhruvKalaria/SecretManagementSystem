@@ -1,26 +1,16 @@
 package org.foreni.sms.core;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.Date;
-
-import javax.persistence.EntityManagerFactory;
 
 import org.foreni.sms.model.KeystoreProfile;
-import org.foreni.sms.model.KeystoreProfile.KeystoreType;
+import org.foreni.sms.model.SecretKeyProfile;
 import org.foreni.sms.repo.KeystoreRepo;
 import org.foreni.sms.utils.KeystoreUtils;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -63,10 +53,10 @@ public class KeystoreManagerImpl implements KeystoreManager {
 		}
 		
 	}
-
-	public Boolean isAvailable() {
-		//return keystoreRepo.isKeystoreCreated();
-		return null;
+	
+	public void addSecretKeyToKeystore(SecretKeyProfile secretKeyProfile) {
+		
+		
 	}
 
 }
